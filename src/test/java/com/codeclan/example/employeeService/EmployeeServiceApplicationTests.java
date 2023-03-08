@@ -1,9 +1,11 @@
 package com.codeclan.example.employeeService;
 
 import com.codeclan.example.employeeService.models.Brief;
+import com.codeclan.example.employeeService.models.Department;
 import com.codeclan.example.employeeService.models.Employee;
 import com.codeclan.example.employeeService.models.Project;
 import com.codeclan.example.employeeService.repositories.BriefRepository;
+import com.codeclan.example.employeeService.repositories.DepartmentRepository;
 import com.codeclan.example.employeeService.repositories.EmployeeRepository;
 import com.codeclan.example.employeeService.repositories.ProjectRepository;
 import org.junit.jupiter.api.Test;
@@ -16,12 +18,16 @@ import java.util.List;
 class EmployeeServiceApplicationTests {
 
 	@Autowired
+	DepartmentRepository departmentRepository;
+
+	@Autowired
 	EmployeeRepository employeeRepository;
 
 	@Autowired
 	BriefRepository briefRepository;
+
 	@Autowired
-	private ProjectRepository projectRepository;
+	ProjectRepository projectRepository;
 
 	@Test
 	void contextLoads() {
@@ -29,16 +35,35 @@ class EmployeeServiceApplicationTests {
 
 	@Test
 	void createEmployee() {
-		Brief brief = new Brief();
-		Project project = new Project("Big Project", 45, brief);
-		Employee sandra = new Employee("Sandra", "Esquire", 8345, brief);
-//		sandra.addBrief(brief);
-		brief.setProject(project);
-		brief.setEmployee(sandra);
+		briefRepository.deleteAll();
+		employeeRepository.deleteAll();
+		projectRepository.deleteAll();
+		departmentRepository.deleteAll();
 
-		projectRepository.save(project);
-		employeeRepository.save(sandra);
-		briefRepository.save(brief);
+		Department parks = new Department("Parks And Recreations");
+		departmentRepository.save(parks);
+
+		Employee employee1 = new Employee("Lesley", "Knope", 8345, parks);
+		Employee employee2 = new Employee("Ron", "Swanson", 6785, parks);
+		employeeRepository.save(employee1);
+		employeeRepository.save(employee2);
+
+		Project project1 = new Project("Big Project", 45);
+		Project project2 = new Project("Less Big Project", 10);
+		projectRepository.save(project1);
+		projectRepository.save(project2);
+
+		Brief brief1 = new Brief(employee1, project1);
+		Brief brief2 = new Brief(employee2, project1);
+		Brief brief3 = new Brief(employee1, project2);
+		briefRepository.save(brief1);
+		briefRepository.save(brief2);
+		briefRepository.save(brief3);
+
+
+
+
+
 	}
 
 }

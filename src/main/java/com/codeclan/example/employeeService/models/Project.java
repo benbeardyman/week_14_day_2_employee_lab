@@ -29,11 +29,10 @@ public class Project {
     public Project() {
     }
 
-    public Project(String name, int duration,  Brief a_brief) {
+    public Project(String name, int duration) {
         this.name = name;
         this.duration = duration;
         this.briefs = new ArrayList<Brief>();
-        this.briefs.add(a_brief);
     }
 
     public Long getId() {

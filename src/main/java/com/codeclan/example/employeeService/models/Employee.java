@@ -29,15 +29,19 @@ public class Employee {
     @Column(name = "briefs")
     private List<Brief> briefs;
 
+    @ManyToOne
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, int employeeNumber, Brief a_brief) {
+    public Employee(String firstName, String lastName, int employeeNumber, Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.employeeNumber = employeeNumber;
+        this.department = department;
         this.briefs = new ArrayList<Brief>();
-        this.briefs.add(a_brief);
     }
 
     public Long getId() {
@@ -82,5 +86,13 @@ public class Employee {
 
     public void addBrief(Brief brief) {
         this.briefs.add(brief);
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }
